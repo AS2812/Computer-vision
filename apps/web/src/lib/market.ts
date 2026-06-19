@@ -26,9 +26,9 @@ export function marketPriceLabel(price: TomatoMarketPrice | null | undefined): s
 }
 
 export async function fetchTomatoMarketPrice(signal?: AbortSignal): Promise<TomatoMarketPrice | null> {
-  if (apiBase == null) return null;
   try {
-    const res = await fetch(`${apiBase}/api/market/tomato`, { signal });
+    const base = apiBase ?? "";
+    const res = await fetch(`${base}/api/market/tomato`, { signal });
     if (!res.ok) return null;
     return (await res.json()) as TomatoMarketPrice;
   } catch {

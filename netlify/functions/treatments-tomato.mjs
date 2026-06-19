@@ -52,7 +52,7 @@ function product(rank, name_en, name_ar, frac, dose_en, dose_ar, application_en,
   };
 }
 
-const prevention = {
+export const prevention = {
   en: [
     "Confirm the diagnosis before any chemical spray.",
     "Scout twice weekly, especially lower leaves and leaf undersides.",
@@ -71,7 +71,7 @@ const prevention = {
   ],
 };
 
-const catalogs = {
+export const catalogs = {
   tomato_spider_mites: {
     disease_name_en: "Spider mites (tomato)",
     disease_name_ar: "العنكبوت الأحمر (طماطم)",
@@ -156,6 +156,138 @@ for (const key of ["tomato_yellow_leaf_curl_virus", "tomato_mosaic_virus", "heal
     disease_name_ar: key === "healthy" ? "طماطم سليمة" : "حالة فيروسية في الطماطم",
     treatments: [],
   };
+}
+
+catalogs.tomato_mosaic_virus = {
+  disease_name_en: "Tomato mosaic virus",
+  disease_name_ar: "فيروس موزاييك الطماطم",
+  treatments: [
+    product(
+      1,
+      "Sanitation and infected-plant removal",
+      "نظافة وإزالة النبات المصاب",
+      "Non-chemical",
+      "No pesticide dose; remove infected material and disinfect tools.",
+      "لا توجد جرعة مبيد؛ أزل الأجزاء/النباتات المصابة وطهر الأدوات.",
+      "Mark suspect plants, remove badly infected plants, bag residues, and work from clean plants to infected plants.",
+      "علّم النباتات المشتبه بها، أزل الشديد منها، اجمع المخلفات في كيس، واشتغل من النظيف للمصاب.",
+      "Not applicable",
+      "غير منطبق",
+      "Main risk is spreading virus mechanically by hands, tools, or tobacco contact.",
+      "الخطر الأساسي هو نقل الفيروس ميكانيكيًا باليد أو الأدوات أو ملامسة الدخان/التبغ.",
+      "No pesticide purchase; budget for labor, bags, and disinfectant. Confirm local prices.",
+      "لا يوجد شراء مبيد؛ احسب تكلفة العمالة والأكياس والمطهر وأكد السعر محليًا.",
+      "There is no curative pesticide for tomato mosaic virus.",
+      "لا يوجد مبيد يشفي فيروس موزاييك الطماطم.",
+      [
+        source("ARC", "Plant disease diagnosis and hygiene confirmation", "https://www.arc.sci.eg/", "No chemical treatment price; management cost is labor/local materials"),
+        source("APC", "Do not buy pesticide unless registration matches crop and pest", APC_URL, "No virus-curing pesticide purchase recommended"),
+      ],
+    ),
+    product(
+      2,
+      "Clean seedlings, resistant seed, and prevention for next planting",
+      "شتلات نظيفة وبذور/أصناف مقاومة للموسم القادم",
+      "Prevention",
+      "Use supplier label and agronomist advice; no pesticide dose.",
+      "اتبع بيانات المورد ونصيحة المهندس؛ لا توجد جرعة مبيد.",
+      "Use certified clean transplants, avoid saving seed from infected plants, remove weeds/volunteer tomatoes, and keep tobacco away from workers and crop.",
+      "استخدم شتلات نظيفة موثوقة، لا تحفظ بذرة من نباتات مصابة، أزل الحشائش والطماطم المتطوعة، وابعد التبغ عن العمال والزرع.",
+      "Not applicable",
+      "غير منطبق",
+      "Buying weak or infected seedlings can restart the disease before symptoms appear.",
+      "شراء شتلات ضعيفة أو مصابة قد يعيد المرض قبل ظهور الأعراض.",
+      "Seedling/seed prices vary by nursery and cultivar; verify locally.",
+      "أسعار الشتلات/البذور تختلف حسب المشتل والصنف؛ أكدها محليًا.",
+      "This is the highest-value prevention step for virus problems.",
+      "هذه أهم خطوة وقائية في مشاكل الفيروسات.",
+      [
+        source("ARC", "Confirm clean planting material with local extension/diagnosis", "https://www.arc.sci.eg/", "Verify nursery/seed price locally"),
+      ],
+    ),
+  ],
+};
+
+catalogs.tomato_yellow_leaf_curl_virus = {
+  disease_name_en: "Tomato yellow leaf curl virus",
+  disease_name_ar: "فيروس تجعد واصفرار أوراق الطماطم",
+  treatments: [
+    product(
+      1,
+      "Rogue infected plants and reduce whitefly pressure",
+      "إزالة المصاب وتقليل ضغط الذبابة البيضاء",
+      "IPM / vector management",
+      "No virus-curing dose; any whitefly product must be APC-registered for tomato and whitefly.",
+      "لا توجد جرعة تشفي الفيروس؛ أي منتج للذبابة البيضاء لازم يكون مسجل للطماطم والذبابة البيضاء.",
+      "Remove badly infected young plants, use insect-proof netting/sticky monitoring, control weeds, and verify any whitefly pesticide with APC first.",
+      "أزل النباتات الصغيرة المصابة بشدة، استخدم شبك/مصائد مراقبة، اكافح الحشائش، وتحقق من أي مبيد للذبابة البيضاء في APC أولًا.",
+      "Follow label if using a registered whitefly product",
+      "حسب اللافتة إذا استُخدم منتج مسجل للذبابة البيضاء",
+      "Spraying after infection will not cure the plant; wrong insecticide use wastes money and increases resistance.",
+      "الرش بعد الإصابة لا يشفي النبات؛ المبيد الغلط يهدر المال ويزود المقاومة.",
+      "Sticky traps/netting/whitefly-control prices vary; verify current local quotes.",
+      "أسعار المصائد/الشبك/مكافحة الذبابة البيضاء تختلف؛ أكد السعر المحلي.",
+      "Focus on the vector and clean seedlings, not a virus cure.",
+      "ركز على الناقل والشتلات النظيفة، وليس علاج الفيروس نفسه.",
+      [
+        source("APC", "Verify tomato + whitefly pesticide registration", APC_URL, "Verify current product and price locally"),
+        source("ARC", "Confirm TYLCV diagnosis and whitefly management", "https://www.arc.sci.eg/", "No direct virus-cure price"),
+      ],
+    ),
+  ],
+};
+
+catalogs.healthy = {
+  disease_name_en: "Healthy tomato",
+  disease_name_ar: "طماطم سليمة",
+  treatments: [
+    product(
+      1,
+      "Routine scouting and prevention",
+      "كشف دوري ووقاية",
+      "Prevention",
+      "No treatment dose.",
+      "لا توجد جرعة علاج.",
+      "Scout twice weekly, keep foliage dry, remove old debris, and record any new spots before buying pesticides.",
+      "اكشف مرتين أسبوعيًا، حافظ على جفاف الورق، أزل المخلفات القديمة، وسجل أي بقع جديدة قبل شراء مبيدات.",
+      "Not applicable",
+      "غير منطبق",
+      "Unneeded pesticide use costs money and can create residue/resistance problems.",
+      "استخدام مبيد بلا داعي يهدر المال وقد يسبب متبقيات/مقاومة.",
+      "No pesticide purchase recommended.",
+      "لا يوجد شراء مبيد موصى به.",
+      "Keep monitoring; very early symptoms can be missed by one image.",
+      "استمر في المتابعة؛ الأعراض المبكرة جدًا قد لا تظهر في صورة واحدة.",
+      [source("ARC", "Routine crop monitoring", "https://www.arc.sci.eg/", "No treatment cost")],
+    ),
+  ],
+};
+
+const checkedPriceSignals = [
+  { disease: "tomato_late_blight", source: "AgriCash", contains: "Ridomil", price: "720 EGP / 400 g listed online" },
+  { disease: "tomato_late_blight", source: "Cowboyzz Egypt", contains: "Ridomil", price: "435 LE / 500 g listed online; sold out on page" },
+  { disease: "tomato_late_blight", source: "ERADCO", contains: "Revus", price: "632.50 SAR / 1 L listed online; out of stock and not an Egypt price" },
+  { disease: "tomato_early_blight", source: "AgroKima", contains: "Hi-Manco", price: "0.00 shown on source page; price unavailable, verify by phone/local dealer" },
+  { disease: "septoria_leaf_spot_tomato", source: "AgroKima", contains: "Hi-Manco", price: "0.00 shown on source page; price unavailable, verify by phone/local dealer" },
+];
+
+for (const signal of checkedPriceSignals) {
+  const entry = catalogs[signal.disease];
+  for (const treatment of entry?.treatments ?? []) {
+    for (const src of treatment.price_sources ?? []) {
+      if (src.source === signal.source && src.title.includes(signal.contains)) {
+        src.price_text = signal.price;
+      }
+    }
+  }
+}
+
+for (const entry of Object.values(catalogs)) {
+  for (const treatment of entry.treatments ?? []) {
+    for (const src of treatment.price_sources ?? []) {
+      if (!src.price_text && src.source !== "APC") src.price_text = "No parsed online price; verify current dealer quote";
+    }
+  }
 }
 
 export async function handler(event) {

@@ -11,7 +11,7 @@
  * invalidate every cache on the next deploy.
  */
 
-const VERSION = "agrovision-v2-online-assistant";
+const VERSION = "agrovision-v3-rich-assistant";
 const SHELL_CACHE = `${VERSION}-shell`;
 const ASSET_CACHE = `${VERSION}-assets`;
 const MODEL_CACHE = `${VERSION}-model`;

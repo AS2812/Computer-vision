@@ -3,6 +3,7 @@
 // Bouncing dot typing indicator is displayed while thinking/pending.
 
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { Bot, LoaderCircle, MessageCircle, Send } from "lucide-react";
 import type { AppAnalysis } from "../appTypes";
 import type { Bi, Lang } from "../data/diseases";
@@ -16,6 +17,111 @@ const QUICK: Bi[] = [
   { en: "What should I do today and this week?", ar: "أعمل إيه النهارده والأسبوع ده؟" },
   { en: "How do I prevent it next season?", ar: "أمنعه إزاي الموسم الجاي؟" },
 ];
+
+function cleanLatex(value: string): string {
+  return value
+    .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, "($1) / ($2)")
+    .replace(/\\times/g, "×")
+    .replace(/\\cdot/g, "·")
+    .replace(/\\leq?/g, "≤")
+    .replace(/\\geq?/g, "≥")
+    .replace(/\\neq/g, "≠")
+    .replace(/\\approx/g, "≈")
+    .replace(/\\pm/g, "±")
+    .replace(/\\%/g, "%")
+    .replace(/\\text\{([^{}]+)\}/g, "$1")
+    .trim();
+}
+
+function renderInlineText(text: string, keyPrefix: string): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  const pattern = /(\\\((.+?)\\\)|\\\[(.+?)\\\]|\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$|\*\*([^*]+?)\*\*|`([^`]+?)`)/g;
+  let lastIndex = 0;
+  let index = 0;
+  for (const match of text.matchAll(pattern)) {
+    const start = match.index ?? 0;
+    if (start > lastIndex) nodes.push(text.slice(lastIndex, start));
+    const math = match[2] ?? match[3] ?? match[4] ?? match[5];
+    const bold = match[6];
+    const code = match[7];
+    if (math) {
+      nodes.push(
+        <span key={`${keyPrefix}-m-${index}`} className="assistant-math-inline" dir="ltr">
+          {cleanLatex(math)}
+        </span>,
+      );
+    } else if (bold) {
+      nodes.push(<strong key={`${keyPrefix}-b-${index}`}>{renderInlineText(bold, `${keyPrefix}-b-${index}`)}</strong>);
+    } else if (code) {
+      nodes.push(<code key={`${keyPrefix}-c-${index}`} className="assistant-inline-code">{code}</code>);
+    }
+    lastIndex = start + match[0].length;
+    index += 1;
+  }
+  if (lastIndex < text.length) nodes.push(text.slice(lastIndex));
+  return nodes;
+}
+
+function listItem(line: string): { ordered: boolean; text: string } | null {
+  const ordered = line.match(/^\s*(?:\d+|[٠-٩]+|[۰-۹]+)[.)،:-]\s*(.+)$/);
+  if (ordered) return { ordered: true, text: ordered[1].trim() };
+  const bullet = line.match(/^\s*[-*•]\s+(.+)$/);
+  if (bullet) return { ordered: false, text: bullet[1].trim() };
+  return null;
+}
+
+function FormattedAssistantText({ text }: { text: string }) {
+  const blocks: ReactNode[] = [];
+  let activeList: { ordered: boolean; items: string[] } | null = null;
+
+  const flushList = () => {
+    if (!activeList) return;
+    const Tag = activeList.ordered ? "ol" : "ul";
+    const items = activeList.items;
+    blocks.push(
+      <Tag key={`list-${blocks.length}`} className="assistant-rich-list">
+        {items.map((item, i) => (
+          <li key={i}>{renderInlineText(item, `li-${blocks.length}-${i}`)}</li>
+        ))}
+      </Tag>,
+    );
+    activeList = null;
+  };
+
+  text.split(/\r?\n/).forEach((rawLine) => {
+    const line = rawLine.trim();
+    if (!line) {
+      flushList();
+      return;
+    }
+    const displayMath = line.match(/^(?:\$\$|\\\[)([\s\S]+?)(?:\$\$|\\\])$/);
+    if (displayMath) {
+      flushList();
+      blocks.push(
+        <div key={`math-${blocks.length}`} className="assistant-math-block" dir="ltr">
+          {cleanLatex(displayMath[1])}
+        </div>,
+      );
+      return;
+    }
+    const item = listItem(line);
+    if (item) {
+      if (!activeList || activeList.ordered !== item.ordered) flushList();
+      activeList = activeList ?? { ordered: item.ordered, items: [] };
+      activeList.items.push(item.text);
+      return;
+    }
+    flushList();
+    blocks.push(
+      <p key={`p-${blocks.length}`} className="assistant-rich-p">
+        {renderInlineText(line, `p-${blocks.length}`)}
+      </p>,
+    );
+  });
+  flushList();
+
+  return <div className="assistant-rich">{blocks}</div>;
+}
 
 export function Sidebar({
   analysis,
@@ -124,7 +230,7 @@ export function Sidebar({
                       </div>
                     </div>
                   ) : (
-                    <p className="whitespace-pre-line leading-relaxed">{m.a}</p>
+                    <FormattedAssistantText text={m.a} />
                   )}
                   
                   <div className="mt-2 flex items-center gap-1.5 text-[9px] text-emerald-200/40">

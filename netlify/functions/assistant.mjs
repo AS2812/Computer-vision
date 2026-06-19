@@ -1,3 +1,5 @@
+import { catalogs } from "./treatments-tomato.mjs";
+
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "content-type, authorization, apikey",
@@ -168,39 +170,49 @@ function inferDiseaseKey(payload, text) {
 }
 
 function treatmentCatalogContext(diseaseKey) {
-  if (diseaseKey !== "tomato_spider_mites") return "";
-  return [
+  const entry = catalogs[diseaseKey];
+  if (!entry?.treatments?.length) return "";
+  const lines = [
     "",
-    "Reviewed Egypt treatment and price signals for tomato spider mites, checked 2026-06-19:",
-    "- Diagnosis note: this is a mite pest, not a fungal disease. Fungicides do not treat it.",
-    "- Must confirm live mites/webbing/stippling under leaves before any spray because current visual certainty can be low.",
+    `Reviewed Egypt treatment and price signals for ${entry.disease_name_en}, checked 2026-06-19:`,
     "- APC registration check is mandatory before buying or spraying: https://www1.apc.gov.eg/en/search.aspx",
-    "- Treatment family: tomato-registered acaricide/miticide for spider mites. Use Egyptian label only for dose, PHI, PPE, and interval.",
-    "- Price signal: AgriMisr listed Mectiam 1.8% acaricide 100 cc at 120 EGP and 250 cc at 270 EGP; page also listed Kani Mite 15% 500 ml at 3700 EGP with stock shown. Source: https://agrimisr.com/index.php?category_id=831&dispatch=categories.view&items_per_page=24&layout=products_without_options&sort_by=popularity&sort_order=asc",
-    "- Price signal: Shoura Online listed Biomectin 120 cm acaricide at 220 EGP, marked out of stock. Source: https://shouraonline.com/product/Biomectin_120CM",
-    "- Price signal: Mobidat Star listed Stra Mactin acaricide 100 ml at 85 EGP sale price. Source: https://mobidatstar.store/product/%D8%B3%D8%AA%D8%B1%D8%A7-%D9%85%D8%A7%D9%83%D8%AA%D9%8A%D9%86-100%D9%85%D9%84%D9%84/",
+    "- Use Egyptian product label only for dose, PHI, PPE, and interval. Do not invent doses.",
+  ];
+  for (const treatment of entry.treatments) {
+    lines.push(`- Treatment option: ${treatment.name_en}; group ${treatment.frac}; note: ${treatment.note_en}`);
+    for (const src of treatment.price_sources ?? []) {
+      if (src.price_text) lines.push(`  Price/source: ${src.source} - ${src.title}: ${src.price_text}. ${src.url}`);
+    }
+  }
+  lines.push(
     "- Availability rule: online prices are dealer/market indicators, not official prices. The farmer must verify current stock, exact pack size, registration, label, and local shop price before purchase.",
-  ].join("\n");
+  );
+  return lines.join("\n");
 }
 
 function appendCatalogPriceSignals(answer, diseaseKey, lang, question) {
-  if (diseaseKey !== "tomato_spider_mites") return answer;
-  if (/120|270|220|3700|85|EGP/i.test(answer)) return answer;
+  const entry = catalogs[diseaseKey];
+  if (!entry?.treatments?.length) return answer;
+  const priceLines = [];
+  for (const treatment of entry.treatments) {
+    for (const src of treatment.price_sources ?? []) {
+      if (src.price_text) priceLines.push({ source: src.source, title: src.title, price: src.price_text });
+    }
+  }
+  if (!priceLines.length) return answer;
+  const pricePattern = new RegExp(priceLines.map((p) => p.price.match(/\d+(?:\.\d+)?/)?.[0]).filter(Boolean).join("|"), "i");
+  if (pricePattern.source !== "(?:)" && pricePattern.test(answer)) return answer;
   const appendix = lang === "ar"
     ? [
       "",
       "إشارات أسعار أونلاين راجعتها AgroVision بتاريخ 2026-06-19:",
-      "- AgriMisr: Mectiam 1.8% عبوة 100 cc بسعر 120 EGP، و250 cc بسعر 270 EGP، وKani Mite 15% عبوة 500 ml بسعر 3700 EGP.",
-      "- Shoura Online: Biomectin 120 cm بسعر 220 EGP لكن الصفحة كانت marked out of stock.",
-      "- Mobidat Star: Stra Mactin 100 ml بسعر 85 EGP.",
+      ...priceLines.map((p) => `- ${p.source}: ${p.title} — ${p.price}.`),
       "- الأسعار مؤشرات سوق فقط؛ أكد التسجيل في APC، اللافتة، العبوة، التوفر، والسعر المحلي قبل الشراء.",
     ].join("\n")
     : [
       "",
       "Reviewed online Egypt price signals checked by AgroVision on 2026-06-19:",
-      "- AgriMisr: Mectiam 1.8% 100 cc at 120 EGP, 250 cc at 270 EGP, and Kani Mite 15% 500 ml at 3700 EGP.",
-      "- Shoura Online: Biomectin 120 cm at 220 EGP, but the page was marked out of stock.",
-      "- Mobidat Star: Stra Mactin 100 ml at 85 EGP.",
+      ...priceLines.map((p) => `- ${p.source}: ${p.title} - ${p.price}.`),
       "- These are market signals only; verify APC registration, label, pack size, stock, and local price before buying.",
     ].join("\n");
   return `${answer.trim()}\n${appendix}`;
@@ -256,7 +268,7 @@ export async function handler(event) {
 
   if (!apiKey) {
     return json(200, {
-      answer: fallback(question, lang, caseContext),
+      answer: appendCatalogPriceSignals(fallback(question, lang, caseContext), diseaseKey, lang, question),
       sources: ["AgroVision Netlify assistant fallback", "Frontend case context"],
       mode: "api-unavailable",
     });
@@ -338,7 +350,7 @@ export async function handler(event) {
   } catch {
     clearTimeout(timeout);
     return json(200, {
-      answer: fallback(question, lang, caseContext),
+      answer: appendCatalogPriceSignals(fallback(question, lang, caseContext), diseaseKey, lang, question),
       sources: ["AgroVision Netlify assistant fallback", "Frontend case context"],
       mode: "api-unavailable",
     });
