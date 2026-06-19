@@ -95,8 +95,10 @@ const catalogs = {
         "العنكبوت الأحمر يحتاج أكاروسيد مش مبيد فطري. لا ترش والثقة منخفضة.",
         [
           source("APC", "Egypt pesticide registration search", APC_URL),
-          source("AgriMisr", "Acaricide / mite-control listings", "https://agrimisr.com/"),
-          source("Local dealer", "Ask for registered tomato spider-mite acaricide", APC_URL),
+          source("AgriMisr", "Mectiam 1.8% acaricide 100 cc / 250 cc and Kani Mite 15% 500 ml listings", "https://agrimisr.com/index.php?category_id=831&dispatch=categories.view&items_per_page=24&layout=products_without_options&sort_by=popularity&sort_order=asc", "120 EGP / 100 cc; 270 EGP / 250 cc; 3700 EGP / 500 ml listed online"),
+          source("Shoura Online", "Biomectin 120 cm acaricide", "https://shouraonline.com/product/Biomectin_120CM", "220 EGP listed online; page marked out of stock"),
+          source("Mobidat Star", "Stra Mactin acaricide 100 ml", "https://mobidatstar.store/product/%D8%B3%D8%AA%D8%B1%D8%A7-%D9%85%D8%A7%D9%83%D8%AA%D9%8A%D9%86-100%D9%85%D9%84%D9%84/", "85 EGP sale price listed online"),
+          source("Local dealer", "Ask for registered tomato spider-mite acaricide", APC_URL, "Verify exact current local price and stock"),
         ],
       ),
     ],
@@ -159,7 +161,11 @@ for (const key of ["tomato_yellow_leaf_curl_virus", "tomato_mosaic_virus", "heal
 export async function handler(event) {
   if (event.httpMethod === "OPTIONS") return { statusCode: 204, headers: CORS, body: "" };
   if (event.httpMethod !== "GET") return json(405, { error: "Method not allowed" });
-  const diseaseKey = event.queryStringParameters?.disease_key || "";
+  const pathKey = String(event.path || "").split("/").filter(Boolean).pop() || "";
+  const queryKey = event.queryStringParameters?.disease_key || "";
+  const diseaseKey = queryKey && queryKey !== ":key"
+    ? queryKey
+    : (pathKey && pathKey !== "treatments-tomato" ? decodeURIComponent(pathKey) : "");
   const entry = catalogs[diseaseKey];
   if (!entry) return json(404, { error: "No reviewed tomato treatment catalog for this disease." });
   return json(200, {

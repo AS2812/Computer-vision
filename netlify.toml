@@ -27,7 +27,7 @@
 
 [[redirects]]
   from = "/api/treatments/tomato/:key"
-  to = "/.netlify/functions/treatments-tomato?disease_key=:key"
+  to = "/.netlify/functions/treatments-tomato/:key"
   status = 200
 
 [[headers]]
