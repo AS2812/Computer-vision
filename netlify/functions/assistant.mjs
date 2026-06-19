@@ -47,6 +47,29 @@ function wantsTreatmentOrPrices(text) {
   return /(treat|treatment|price|prices|buy|product|spray|علاج|أسعار|اسعار|سعر|منتج|رش|مبيد|اشتري|هات)/i.test(text);
 }
 
+function isIdentityQuestion(text) {
+  return /(who\s*are\s*you|what\s*are\s*you|introduce\s*yourself|من\s*[أا]نت|[أا]نت\s*مين|عرفني)/i.test(text);
+}
+
+function identityAnswer(lang) {
+  if (lang === "ar") {
+    return [
+      "أنا مساعد AgroVision Egypt الزراعي الخاص بالطماطم.",
+      "1. بساعدك تفسر نتيجة فحص الأوراق وتقرأ علامات الأمراض والآفات.",
+      "2. بقدر أجاوب على أسئلة الوقاية وخطوات النهارده والأسبوع.",
+      "3. ما بديش جرعات أو أسماء منتجات — أي قرار رش يحتاج تأكيد تشخيص وموافقة مهندس زراعي.",
+      "4. أنا إشارة فرز تساعد المهندس الزراعي، مش بديله.",
+    ].join("\n");
+  }
+  return [
+    "I am AgroVision Egypt's tomato farming assistant.",
+    "1. I help you interpret leaf scan results and read disease/pest signs.",
+    "2. I can answer questions about prevention, today's steps, and this week's plan.",
+    "3. I never give doses or product names — any spray decision needs diagnosis confirmation and an agronomist's approval.",
+    "4. I am a triage signal that supports the agronomist, not a replacement.",
+  ].join("\n");
+}
+
 function hostedTreatmentAnswer(question, lang, context) {
   const text = `${question}\n${context}`.toLowerCase();
   const spider = /spider|mite|العنكبوت|حلم/.test(text);
@@ -135,6 +158,14 @@ export async function handler(event) {
     });
   }
 
+  if (isIdentityQuestion(question)) {
+    return json(200, {
+      answer: identityAnswer(lang),
+      sources: ["AgroVision Egypt assistant self-description"],
+      mode: "external-grounded-assistant",
+    });
+  }
+
   if (!apiKey) {
     return json(200, {
       answer: fallback(question, lang, caseContext),
@@ -157,10 +188,10 @@ export async function handler(event) {
       body: JSON.stringify({
         model,
         temperature: Number(process.env.EXTERNAL_LLM_TEMPERATURE || 0.3),
-        // 800 tokens: enough for 5 bullets (~300 chars) plus reasoning overhead.
+        // 1200 tokens: ~400 reasoning overhead + ~800 for 5 Arabic bullets.
         // Do NOT pass reasoning_effort — "low" caused 12s+ responses that exceeded
         // Netlify's 10s function timeout. Without it the model responds in 7-9s.
-        max_tokens: Number(process.env.EXTERNAL_LLM_MAX_TOKENS || 800),
+        max_tokens: Number(process.env.EXTERNAL_LLM_MAX_TOKENS || 1200),
         messages: [
           { role: "system", content: system },
           {
