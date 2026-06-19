@@ -1,0 +1,91 @@
+2026-06-19T02:54:20.621280Z  INFO tailwindcss_oxide::scanner: Provided sources:
+2026-06-19T02:54:20.622046Z  INFO tailwindcss_oxide::scanner: Source: PublicSourceEntry { base: "C:/Users/ahmed/Desktop/Computer vision/apps/web", pattern: "**/*", negated: false }
+2026-06-19T02:54:20.623382Z  INFO tailwindcss_oxide::scanner: Optimized sources:
+2026-06-19T02:54:20.623406Z  INFO tailwindcss_oxide::scanner: Source: Auto { base: "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web" }
+2026-06-19T02:54:20.651854Z  INFO tailwindcss_oxide::scanner: Provided sources:
+2026-06-19T02:54:20.651903Z  INFO tailwindcss_oxide::scanner: Source: PublicSourceEntry { base: "C:/Users/ahmed/Desktop/Computer vision/apps/web", pattern: "**/*", negated: false }
+2026-06-19T02:54:20.652830Z  INFO tailwindcss_oxide::scanner: Optimized sources:
+2026-06-19T02:54:20.652840Z  INFO tailwindcss_oxide::scanner: Source: Auto { base: "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web" }
+2026-06-19T02:54:20.682324Z  INFO tailwindcss_oxide::scanner: Provided sources:
+2026-06-19T02:54:20.682375Z  INFO tailwindcss_oxide::scanner: Source: PublicSourceEntry { base: "C:/Users/ahmed/Desktop/Computer vision/apps/web", pattern: "**/*", negated: false }
+2026-06-19T02:54:20.683285Z  INFO tailwindcss_oxide::scanner: Optimized sources:
+2026-06-19T02:54:20.683298Z  INFO tailwindcss_oxide::scanner: Source: Auto { base: "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web" }
+2026-06-19T02:54:20.683528Z  INFO discover_sources: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.683555Z  INFO discover_sources:walk_synchronous: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.691558Z  INFO discover_sources:walk_synchronous: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.692379Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\components\\LeafSplash.tsx"
+2026-06-19T02:54:20.692400Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\components\\Badge.tsx"
+2026-06-19T02:54:20.692379Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\public\\manifest.webmanifest"
+2026-06-19T02:54:20.692409Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\e2e\\dashboard.spec.ts"
+2026-06-19T02:54:20.692508Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\public\\models\\plant_disease_mobilenetv2.labels.json"
+2026-06-19T02:54:20.692502Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\components\\ui.tsx"
+2026-06-19T02:54:20.692527Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\components\\Phases.tsx"
+2026-06-19T02:54:20.692530Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\components\\CaseWorkspace.test.tsx"
+2026-06-19T02:54:20.692556Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\index.html"
+2026-06-19T02:54:20.692577Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\data\\diseases.ts"
+2026-06-19T02:54:20.692601Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\components\\Sidebar.tsx"
+2026-06-19T02:54:20.692628Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\playwright.config.ts"
+2026-06-19T02:54:20.692645Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\package.json"
+2026-06-19T02:54:20.692652Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\data\\i18n.ts"
+2026-06-19T02:54:20.692664Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\data\\economics.ts"
+2026-06-19T02:54:20.692674Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\market.ts"
+2026-06-19T02:54:20.692683Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\components\\CaseWorkspace.tsx"
+2026-06-19T02:54:20.692723Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\weather.ts"
+2026-06-19T02:54:20.692735Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\public\\favicon.svg"
+2026-06-19T02:54:20.692775Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\types.ts"
+2026-06-19T02:54:20.692818Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\onnx.ts"
+2026-06-19T02:54:20.692844Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\main.tsx"
+2026-06-19T02:54:20.692854Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\components\\FeatureCard.test.tsx"
+2026-06-19T02:54:20.692859Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\analyzeClient.ts"
+2026-06-19T02:54:20.692864Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\public\\icon.svg"
+2026-06-19T02:54:20.692859Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\components\\FeatureCard.tsx"
+2026-06-19T02:54:20.692893Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\pwa.ts"
+2026-06-19T02:54:20.692916Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\test\\setup.ts"
+2026-06-19T02:54:20.692931Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\apiBase.ts"
+2026-06-19T02:54:20.692949Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\App.test.tsx"
+2026-06-19T02:54:20.692955Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\safety.ts"
+2026-06-19T02:54:20.692973Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\cropBot.ts"
+2026-06-19T02:54:20.692980Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\i18n.ts"
+2026-06-19T02:54:20.692989Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\tsconfig.app.json"
+2026-06-19T02:54:20.693020Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\tsconfig.node.json"
+2026-06-19T02:54:20.693030Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\screening.ts"
+2026-06-19T02:54:20.693046Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\engine.test.ts"
+2026-06-19T02:54:20.693053Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\App.tsx"
+2026-06-19T02:54:20.693055Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\supabase.ts"
+2026-06-19T02:54:20.693058Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\tsconfig.json"
+2026-06-19T02:54:20.693106Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\vite.config.ts"
+2026-06-19T02:54:20.693126Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\exports.ts"
+2026-06-19T02:54:20.693126Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\api.ts"
+2026-06-19T02:54:20.693171Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\appTypes.ts"
+2026-06-19T02:54:20.693135Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\treatments.ts"
+2026-06-19T02:54:20.693148Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\components\\Assistant.test.tsx"
+2026-06-19T02:54:20.693148Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\public\\sw.js"
+2026-06-19T02:54:20.693163Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\data\\sources.ts"
+2026-06-19T02:54:20.693198Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\lib\\imageSignals.ts"
+2026-06-19T02:54:20.693242Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\components\\ErrorBoundary.tsx"
+2026-06-19T02:54:20.693266Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\App.tsx"
+2026-06-19T02:54:20.693281Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\legacy\\components\\Assistant.tsx"
+2026-06-19T02:54:20.696214Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\public\\models\\plant_disease_mobilenetv2.onnx"
+2026-06-19T02:54:20.696337Z  INFO discover_sources: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.696360Z  INFO extract_candidates: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.696365Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.696370Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.719102Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.719549Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.719569Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.719574Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading 1 file(s)
+2026-06-19T02:54:20.719745Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading "C:\\Users\\ahmed\\Desktop\\Computer vision\\apps\\web\\src\\styles.css"
+2026-06-19T02:54:20.719756Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.719760Z  INFO extract_candidates:extract_css_variables: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.719764Z  INFO extract_candidates:extract_css_variables:extract: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.719954Z  INFO extract_candidates:extract_css_variables:extract: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.719976Z  INFO extract_candidates:extract_css_variables: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.720964Z  INFO extract_candidates: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.725853Z  INFO get_files: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.725877Z  INFO get_files:discover_sources: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.725881Z  INFO get_files:discover_sources: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.725956Z  INFO get_files: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.726127Z  INFO get_globs: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.726134Z  INFO get_globs:discover_sources: tailwindcss_oxide::scanner: enter
+2026-06-19T02:54:20.726138Z  INFO get_globs:discover_sources: tailwindcss_oxide::scanner: exit
+2026-06-19T02:54:20.733540Z  INFO get_globs: tailwindcss_oxide::scanner: exit

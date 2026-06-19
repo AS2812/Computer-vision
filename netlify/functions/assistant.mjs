@@ -87,6 +87,25 @@ function hostedTreatmentAnswer(question, lang, context) {
   ].join("\n");
 }
 
+// Pull the final formatted answer from reasoning_content when content is empty.
+// Reasoning models write thinking first then emit the answer; we want only the answer.
+function extractFinalAnswer(reasoning) {
+  const lines = reasoning.split("\n").map((l) => l.trim()).filter(Boolean);
+  // Walk backward and collect the trailing block of bullet/numbered lines.
+  const answerLines = [];
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const l = lines[i];
+    if (/^[-•·*٠-٩]|^\d+[.\-)]|^[١٢٣٤٥٦٧٨٩][.\-)]/.test(l)) {
+      answerLines.unshift(l);
+    } else if (answerLines.length > 0) {
+      break; // stop when we hit non-bullet content after finding bullets
+    }
+  }
+  if (answerLines.length >= 2) return answerLines.join("\n");
+  // No clear bullet block — return last 600 chars as best-effort.
+  return reasoning.length > 600 ? reasoning.slice(-600).trim() : reasoning;
+}
+
 export async function handler(event) {
   if (event.httpMethod === "OPTIONS") return { statusCode: 204, headers: CORS, body: "" };
   if (event.httpMethod !== "POST") return json(405, { error: "Method not allowed" });
@@ -137,7 +156,9 @@ export async function handler(event) {
       body: JSON.stringify({
         model,
         temperature: Number(process.env.EXTERNAL_LLM_TEMPERATURE || 0.3),
-        max_tokens: Number(process.env.EXTERNAL_LLM_MAX_TOKENS || 550),
+        // 2000 tokens: reasoning models consume ~400 tokens on chain-of-thought;
+        // leaving 550 (old default) caused content to be empty after the thinking.
+        max_tokens: Number(process.env.EXTERNAL_LLM_MAX_TOKENS || 2000),
         reasoning_effort: process.env.EXTERNAL_LLM_REASONING_EFFORT || "low",
         messages: [
           { role: "system", content: system },
@@ -159,14 +180,31 @@ export async function handler(event) {
     if (!res.ok) throw new Error(`provider ${res.status}`);
     const data = await res.json();
     const msg = data?.choices?.[0]?.message;
-    const answer = String(msg?.content || msg?.reasoning_content || "").trim();
-    if (!answer) throw new Error("empty provider answer");
-    if (unsafeInventedTreatment(answer)) throw new Error("unsafe invented treatment details");
-    return json(200, {
-      answer,
-      sources: ["Online grounded assistant", "Frontend case context", "AgroVision reviewed tomato guidance"],
-      mode: "external-grounded-assistant",
-    });
+    // content is the actual answer; reasoning_content is the model's chain-of-thought.
+    // Only run the safety filter on content (reasoning may reference things it decided NOT to say).
+    // If content is empty (model used reasoning-only mode), extract the formatted tail of reasoning.
+    const content = String(msg?.content || "").trim();
+    if (content) {
+      if (unsafeInventedTreatment(content)) throw new Error("unsafe invented treatment details");
+      return json(200, {
+        answer: content,
+        sources: ["Online grounded assistant", "Frontend case context", "AgroVision reviewed tomato guidance"],
+        mode: "external-grounded-assistant",
+      });
+    }
+    // Fallback: extract the final formatted section from reasoning_content.
+    const reasoning = String(msg?.reasoning_content || "").trim();
+    if (reasoning) {
+      const answer = extractFinalAnswer(reasoning);
+      if (answer && !unsafeInventedTreatment(answer)) {
+        return json(200, {
+          answer,
+          sources: ["Online grounded assistant", "Frontend case context", "AgroVision reviewed tomato guidance"],
+          mode: "external-grounded-assistant",
+        });
+      }
+    }
+    throw new Error("empty provider answer");
   } catch {
     clearTimeout(timeout);
     return json(200, {
