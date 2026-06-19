@@ -1,0 +1,70 @@
+{
+  "models": {
+    "disease": {
+      "name": "plant_disease_mobilenetv2",
+      "version": "2026-06-15-plantvillage-multicrop",
+      "file": "plant_disease_mobilenetv2.onnx",
+      "sha256": "7e2be034c263713a529dca48aa08f606d60133bc956ca99ff35b88f3ced7ca06",
+      "architecture": "MobileNetV2 (1.0, 224) image classifier, ONNX (embedded weights)",
+      "source": "https://huggingface.co/ozair23/mobilenet_v2_1.0_224-finetuned-plantdisease",
+      "labels": [
+        "Apple___Apple_scab", "Apple___Black_rot", "Apple___Cedar_apple_rust", "Apple___healthy",
+        "Blueberry___healthy", "Cherry_(including_sour)___Powdery_mildew", "Cherry_(including_sour)___healthy",
+        "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot", "Corn_(maize)___Common_rust_",
+        "Corn_(maize)___Northern_Leaf_Blight", "Corn_(maize)___healthy",
+        "Grape___Black_rot", "Grape___Esca_(Black_Measles)", "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)",
+        "Grape___healthy", "Orange___Haunglongbing_(Citrus_greening)", "Peach___Bacterial_spot",
+        "Peach___healthy", "Pepper,_bell___Bacterial_spot", "Pepper,_bell___healthy",
+        "Potato___Early_blight", "Potato___Late_blight", "Potato___healthy", "Raspberry___healthy",
+        "Soybean___healthy", "Squash___Powdery_mildew", "Strawberry___Leaf_scorch", "Strawberry___healthy",
+        "Tomato___Bacterial_spot", "Tomato___Early_blight", "Tomato___Late_blight", "Tomato___Leaf_Mold",
+        "Tomato___Septoria_leaf_spot", "Tomato___Spider_mites Two-spotted_spider_mite", "Tomato___Target_Spot",
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus", "Tomato___Tomato_mosaic_virus", "Tomato___healthy"
+      ],
+      "input_size": [224, 224],
+      "resize_short": 256,
+      "input_layout": "NCHW",
+      "preprocessing": "mobilenet_pv",
+      "output_type": "logits",
+      "validation_level": "experimental",
+      "crops_covered": ["tomato", "potato", "pepper", "maize", "grape", "apple", "cherry", "peach", "orange", "strawberry", "squash", "blueberry", "raspberry", "soybean"],
+      "metrics": {
+        "source_test_accuracy_lab": 0.9777,
+        "field_accuracy": null
+      },
+      "limitations": [
+        "Trained on PlantVillage LAB images (single leaf, plain background). Real field-photo accuracy is much lower — top-1 can be wrong, so the app shows the top possibilities, not one confident answer.",
+        "Confidence is uncalibrated softmax and must not be read as agronomic certainty.",
+        "Covers only the 14 PlantVillage crops. It does NOT cover onion, cotton, wheat, or sunflower.",
+        "The app rejects tomato diagnoses unless tomato labels receive at least 60% of the full multi-crop score and the top two tomato matches are separated by at least 15 percentage points.",
+        "The crop is selected by the user; the image model does not independently confirm the host crop.",
+        "Always confirm with a local agronomist before any treatment."
+      ]
+    },
+    "banana_disease": {
+      "name": "banana_cordana_vgg19_int8",
+      "file": "banana_cordana_vgg19_int8.onnx",
+      "sha256": "d7b5d07361999ef1fc86488ef2ab2309b0dd61e589a8d230a71c4b90ce2740ba",
+      "architecture": "VGG19 transfer learning, ONNX QDQ INT8",
+      "source": "https://github.com/soorajpazeekal/plant-disease-detection-with-cnn-and-whatsapp",
+      "labels": ["bunchy_top", "cordana_leaf_spot", "panama_disease", "sigatoka_leaf_spot"],
+      "input_size": [256, 256],
+      "input_layout": "NHWC",
+      "preprocessing": "vgg19",
+      "output_type": "probabilities",
+      "validation_level": "experimental",
+      "crops_covered": ["banana"],
+      "metrics": {
+        "source_validation_accuracy": 0.9067,
+        "field_accuracy": null
+      },
+      "limitations": [
+        "The supplied Cordana smoke photo is duplicated in the source validation data.",
+        "Confidence is uncalibrated and no independent field accuracy is claimed.",
+        "The model has no healthy or out-of-domain class, so it cannot independently rule out a healthy banana leaf or non-banana image.",
+        "The crop is selected by the user; the image model does not independently confirm the host crop.",
+        "Use for local evaluation only because the source repository does not declare a model or dataset license."
+      ]
+    }
+  }
+}

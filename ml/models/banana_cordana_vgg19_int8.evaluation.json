@@ -1,0 +1,37 @@
+{
+  "status": "experimental",
+  "evaluated_on": "2026-06-14",
+  "model_file": "banana_cordana_vgg19_int8.onnx",
+  "sha256": "d7b5d07361999ef1fc86488ef2ab2309b0dd61e589a8d230a71c4b90ce2740ba",
+  "conversion": "Keras VGG19 transfer-learning model converted to ONNX and statically quantized with QDQ INT8",
+  "source": "https://github.com/soorajpazeekal/plant-disease-detection-with-cnn-and-whatsapp",
+  "source_data_audit": {
+    "images_examined": 288,
+    "unique_dhash_groups": 137,
+    "conflicting_label_groups": 3,
+    "supplied_photo_present_in_source_validation_data": true
+  },
+  "results": {
+    "source_train_accuracy": 0.8923,
+    "source_validation_accuracy": 0.9067,
+    "included_eight_image_smoke_accuracy": 1.0,
+    "supplied_photo_expected": "cordana_leaf_spot",
+    "supplied_photo_predicted": "cordana_leaf_spot",
+    "supplied_photo_is_independent_test": false,
+    "int8_included_smoke_accuracy_loss": 0.0,
+    "int8_model_size_bytes": 20284795,
+    "isolated_runtime_rss_mb": 105.1
+  },
+  "rejected_candidate": {
+    "architecture": "MobileNetV3-Small",
+    "deduplicated_held_out_accuracy": 0.4231,
+    "reason": "Accuracy was too low to install."
+  },
+  "limitations": [
+    "The source repository does not declare a model or dataset license; use these weights for local evaluation only.",
+    "The supplied photo is duplicated in source validation data and cannot demonstrate generalization.",
+    "Confidence is uncalibrated.",
+    "The model has no healthy or out-of-domain class and cannot independently confirm that an image is a diseased banana plant.",
+    "No field accuracy is claimed."
+  ]
+}

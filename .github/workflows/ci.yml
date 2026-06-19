@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: supabase/setup-cli@v1
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @agrovision/web exec playwright install --with-deps chromium
+      - run: uv sync --project services/api --extra dev --extra onnx
+      - run: uv run --project services/api pytest services/api/tests
+      - run: PYTHONPATH=ml/training uv run --project services/api pytest ml/training/test_evaluate.py --no-cov
+      - run: uv run --project services/api python scripts/model_audit.py
+      - run: uv run --project services/api python scripts/benchmark_model.py --runs 3 --check
+      - run: pnpm --filter @agrovision/web test
+      - run: pnpm --filter @agrovision/web build
+      - run: pnpm --filter @agrovision/web test:e2e
+      - run: supabase start
+      - run: supabase db test

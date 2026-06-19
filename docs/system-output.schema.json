@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agrovision.local/schemas/system-output.schema.json",
+  "title": "AgroVision Case Decision-Support Output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "crop",
+    "location",
+    "farm_type",
+    "growth_stage",
+    "symptoms",
+    "observations",
+    "observation_sources",
+    "egypt_sources",
+    "diagnosis",
+    "chatbot_followup_questions",
+    "protection_plan",
+    "treatment_plan",
+    "cost_benefit",
+    "prediction",
+    "recommendation",
+    "conclusion",
+    "disclaimer"
+  ],
+  "properties": {
+    "case_id": { "type": "string", "minLength": 1 },
+    "crop": { "type": "string", "minLength": 1 },
+    "location": { "type": "string" },
+    "farm_type": { "type": ["string", "null"] },
+    "growth_stage": { "type": ["string", "null"] },
+    "symptoms": { "$ref": "#/$defs/stringArray" },
+    "observations": {
+      "type": "object",
+      "additionalProperties": { "type": ["string", "number", "boolean"] }
+    },
+    "observation_sources": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": ["farmer_answer", "image_model", "image_measurement", "device_sensor", "reviewed_rule", "expert", "lab"]
+      }
+    },
+    "egypt_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/egyptSource" }
+    },
+    "diagnosis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "top_disease",
+        "confidence",
+        "alternatives",
+        "evidence",
+        "missing_info",
+        "confirmation_status",
+        "confirmation"
+      ],
+      "properties": {
+        "top_disease": { "type": "string" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "alternatives": {
+          "type": "array",
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["disease", "confidence"],
+            "properties": {
+              "disease": { "type": "string" },
+              "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        },
+        "evidence": { "$ref": "#/$defs/stringArray" },
+        "missing_info": { "$ref": "#/$defs/stringArray" },
+        "confirmation_status": {
+          "enum": [
+            "unconfirmed",
+            "confirmed_by_egyptian_agronomist",
+            "confirmed_by_egyptian_plant_pathology_lab"
+          ]
+        },
+        "confirmation": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/diagnosisConfirmation" }
+          ]
+        }
+      }
+    },
+    "chatbot_followup_questions": {
+      "type": "array",
+      "maxItems": 5,
+      "items": { "type": "string", "minLength": 2 }
+    },
+    "protection_plan": { "$ref": "#/$defs/stringArray" },
+    "treatment_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["non_chemical", "chemical_category_if_needed", "safety_notes"],
+      "properties": {
+        "non_chemical": { "$ref": "#/$defs/stringArray" },
+        "chemical_category_if_needed": { "$ref": "#/$defs/stringArray" },
+        "safety_notes": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "cost_benefit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "treatment_cost_egp",
+        "estimated_saved_revenue_egp",
+        "net_benefit_egp",
+        "roi",
+        "break_even_yield_saved_kg",
+        "decision",
+        "missing_inputs"
+      ],
+      "properties": {
+        "treatment_cost_egp": { "$ref": "#/$defs/nullableNonNegativeNumber" },
+        "estimated_saved_revenue_egp": { "$ref": "#/$defs/nullableNonNegativeNumber" },
+        "net_benefit_egp": { "type": ["number", "null"] },
+        "roi": { "type": ["number", "null"] },
+        "break_even_yield_saved_kg": { "$ref": "#/$defs/nullableNonNegativeNumber" },
+        "decision": { "type": "string" },
+        "missing_inputs": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "prediction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "damage_degree",
+        "yield_loss_percent",
+        "yield_kg_per_feddan",
+        "main_risk_factors"
+      ],
+      "properties": {
+        "damage_degree": {
+          "type": "string",
+          "enum": ["", "low", "medium", "high", "severe", "unknown"]
+        },
+        "yield_loss_percent": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "yield_kg_per_feddan": { "$ref": "#/$defs/nullableNonNegativeNumber" },
+        "main_risk_factors": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["best_action_now", "next_3_to_7_days", "when_to_call_expert"],
+      "properties": {
+        "best_action_now": { "type": "string" },
+        "next_3_to_7_days": { "type": "string" },
+        "when_to_call_expert": { "type": "string" }
+      }
+    },
+    "conclusion": { "type": "string" },
+    "disclaimer": {
+      "const": "AI prediction only. Confirm with an agricultural engineer or lab when crop value or risk is high."
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "nullableNonNegativeNumber": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "egyptSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "organization",
+        "url",
+        "purpose",
+        "source_kind",
+        "jurisdiction",
+        "status",
+        "retrieved_on"
+      ],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "organization": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "purpose": { "type": "string", "minLength": 1 },
+        "source_kind": { "enum": ["diagnosis", "pesticide_registration", "food_safety"] },
+        "jurisdiction": { "const": "Egypt" },
+        "status": { "const": "official" },
+        "retrieved_on": { "type": "string", "format": "date" }
+      }
+    },
+    "diagnosisConfirmation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disease",
+        "confirmation_type",
+        "organization",
+        "report_reference",
+        "confirmer_name",
+        "notes",
+        "evidence_filename",
+        "evidence_sha256",
+        "jurisdiction",
+        "recorded_at",
+        "verification_notice"
+      ],
+      "properties": {
+        "disease": { "type": "string", "minLength": 2 },
+        "confirmation_type": {
+          "enum": ["egyptian_agronomist", "egyptian_plant_pathology_lab"]
+        },
+        "organization": { "type": "string", "minLength": 2 },
+        "report_reference": { "type": "string", "minLength": 2 },
+        "confirmer_name": { "type": ["string", "null"] },
+        "notes": { "type": ["string", "null"] },
+        "evidence_filename": { "type": "string", "minLength": 1 },
+        "evidence_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "jurisdiction": { "const": "Egypt" },
+        "recorded_at": { "type": "string", "format": "date-time" },
+        "verification_notice": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

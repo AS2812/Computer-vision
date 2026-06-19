@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="AgroVision">
+  <defs>
+    <linearGradient id="l" x1="32" y1="8" x2="32" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#cff45b"/>
+      <stop offset="55%" stop-color="#67dd8e"/>
+      <stop offset="100%" stop-color="#0a3c26"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#061a15"/>
+  <path d="M32 12
+           C 41 18, 50 30, 47 43
+           C 44 54, 37 57, 32 60
+           C 27 57, 20 54, 17 43
+           C 14 30, 23 18, 32 12 Z"
+        fill="url(#l)"/>
+  <path d="M32 12 L32 59" stroke="#ffffff" stroke-opacity="0.6" stroke-width="2" stroke-linecap="round"/>
+</svg>

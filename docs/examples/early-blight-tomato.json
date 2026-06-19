@@ -1,0 +1,85 @@
+{
+  "case_id": "case-demo-early-blight-001",
+  "crop": "tomato",
+  "location": "Beheira, Egypt",
+  "diagnosis": {
+    "top_disease": "Early blight",
+    "confidence": 0.74,
+    "alternatives": [
+      {
+        "disease": "Septoria leaf spot",
+        "confidence": 0.17
+      },
+      {
+        "disease": "Bacterial spot",
+        "confidence": 0.09
+      }
+    ],
+    "evidence": [
+      "Brown spots with visible concentric rings",
+      "Symptoms started on older lower leaves",
+      "Lower leaves show yellowing around the spots",
+      "Farmer reports gradual spread"
+    ],
+    "missing_info": [
+      "Whether the spots have a clear yellow halo",
+      "Whether overhead watering was used recently",
+      "Percent of plants affected across the field"
+    ]
+  },
+  "chatbot_followup_questions": [
+    "Do the brown spots look like circles inside circles?",
+    "Did the problem start on the lower old leaves?",
+    "How many plants out of every 100 show the same spots?",
+    "Do you use flood, drip, or sprinkler irrigation?",
+    "Please add one photo of the whole plant and one close photo of the underside of a spotted leaf."
+  ],
+  "protection_plan": [
+    "Remove heavily affected lower leaves and take them out of the field.",
+    "Avoid splashing soil onto leaves; flood irrigation can increase splash and humidity risk.",
+    "Water early and keep foliage dry overnight.",
+    "Improve airflow where plants are crowded.",
+    "Inspect the field again in 3 days and record whether new upper leaves are affected.",
+    "Do not over-spray."
+  ],
+  "treatment_plan": {
+    "non_chemical": [
+      "Remove infected lower leaves.",
+      "Remove infected crop debris.",
+      "Avoid overhead watering and reduce leaf wetness.",
+      "Rotate away from tomato, potato, pepper, and eggplant in the next cycle where practical."
+    ],
+    "chemical_category_if_needed": [
+      "If an agricultural engineer confirms fungal early blight and the local crop label allows it, use a locally registered protectant fungicide category or a registered systemic fungicide category in rotation.",
+      "Do not repeat the same resistance-action group continuously."
+    ],
+    "safety_notes": [
+      "Verify local registration, current product label, crop dose, PPE, and pre-harvest interval.",
+      "Do not use a chemical treatment based only on the AI result.",
+      "Ask a local agricultural engineer before spraying."
+    ]
+  },
+  "cost_benefit": {
+    "treatment_cost_egp": null,
+    "estimated_saved_revenue_egp": null,
+    "net_benefit_egp": null,
+    "decision": "Need more data: farm area, expected yield, market price, percent affected, treatment cost, and harvest time remaining."
+  },
+  "prediction": {
+    "damage_degree": "medium",
+    "yield_loss_percent": null,
+    "yield_kg_per_feddan": null,
+    "main_risk_factors": [
+      "Symptoms have reached multiple lower leaves",
+      "Dense canopy",
+      "Possible soil splash and prolonged humidity"
+    ]
+  },
+  "recommendation": {
+    "best_action_now": "Remove heavily affected lower leaves, improve leaf dryness, collect the missing photos and affected-plant percentage, then confirm the diagnosis before chemical treatment.",
+    "next_3_to_7_days": "Recheck marked plants, record whether spots reach upper leaves, and ask an agricultural engineer if spread continues or fruit symptoms appear.",
+    "when_to_call_expert": "Call an agricultural engineer now if spread is fast, more than about one third of plants are affected, fruit is affected, or harvest is close."
+  },
+  "conclusion": "The current evidence moderately supports early blight, but this is an AI prediction rather than a confirmed laboratory diagnosis. Immediate hygiene and moisture-control steps are low cost and appropriate while missing evidence is collected.",
+  "disclaimer": "AI prediction only. Confirm with an agricultural engineer or lab when crop value or risk is high."
+}

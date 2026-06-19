@@ -1,0 +1,28 @@
+{
+  "name": "AgroVision Egypt — Tomato leaf checkup",
+  "short_name": "AgroVision",
+  "description": "Free Arabic-first tomato leaf screening that runs on your device and works offline.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#061a15",
+  "theme_color": "#061a15",
+  "categories": ["agriculture", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
