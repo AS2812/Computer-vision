@@ -27,13 +27,18 @@ export interface Bi {
 
 export type CauseType = "fungal" | "oomycete" | "bacterial" | "viral" | "mite" | "none";
 
+/** -1 means this disease is detected only by the AI (not in the local ONNX model). */
+export type ModelIndex = number;
+
 export interface TomatoDisease {
   /** Internal knowledge-base key (matches services/api/app/diseases.py keys). */
   key: string;
-  /** Raw PlantVillage model label as emitted by the ONNX model. */
+  /** Raw PlantVillage model label as emitted by the ONNX model. Empty string for AI-only diseases. */
   rawLabel: string;
-  /** Absolute index in the 38-class model output (frozen, guarded by a test). */
-  modelIndex: number;
+  /** Absolute index in the 38-class model output. -1 for AI-only diseases not in the ONNX model. */
+  modelIndex: ModelIndex;
+  /** When true, the local ONNX model cannot detect this disease — only the AI second opinion can. */
+  aiOnly?: boolean;
   name: Bi;
   /** Very short chip label. */
   short: Bi;

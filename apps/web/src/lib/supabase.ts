@@ -16,10 +16,12 @@ export const analyzeFunctionUrl: string | null =
     ? null
     : analyzeOverride ?? (import.meta.env.DEV ? (url ? `${url.replace(/\/$/, "")}/functions/v1/analyze` : null) : "/.netlify/functions/analyze");
 
-/** The hosted crop assistant Edge Function URL. */
+/** The hosted crop assistant Edge Function URL — routes through Netlify proxy in production. */
 export const assistantFunctionUrl: string | null =
   (import.meta.env.VITE_ASSISTANT_FUNCTION_URL as string | undefined) ??
-  (url ? `${url.replace(/\/$/, "")}/functions/v1/assistant` : null);
+  (import.meta.env.DEV
+    ? (url ? `${url.replace(/\/$/, "")}/functions/v1/assistant` : null)
+    : "/.netlify/functions/assistant");
 
 export const supabaseConfigured = Boolean(supabase);
 
