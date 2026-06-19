@@ -148,7 +148,8 @@ export async function handler(event) {
     : "You are AgroVision Egypt's tomato-only farming assistant. Reply in at most 5 short bullets. Use only the supplied case context. Never invent product names, active ingredients, doses, home mixtures, or prices. Do not write dose numbers such as ml/L/g/tsp. If treatment/price/dose is missing from context, say to confirm locally with an agronomist. Focus on safe steps: inspect, remove infected leaves, keep foliage dry, ventilate, monitor. No Markdown.";
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), Number(process.env.EXTERNAL_LLM_TIMEOUT_MS || 25000));
+  // Abort at 9s so we return a clean api-unavailable before Netlify's 10s function timeout kills the process.
+  const timeout = setTimeout(() => controller.abort(), Number(process.env.EXTERNAL_LLM_TIMEOUT_MS || 9000));
   try {
     const res = await fetch(apiUrl, {
       method: "POST",
@@ -156,10 +157,10 @@ export async function handler(event) {
       body: JSON.stringify({
         model,
         temperature: Number(process.env.EXTERNAL_LLM_TEMPERATURE || 0.3),
-        // 2000 tokens: reasoning models consume ~400 tokens on chain-of-thought;
-        // leaving 550 (old default) caused content to be empty after the thinking.
-        max_tokens: Number(process.env.EXTERNAL_LLM_MAX_TOKENS || 2000),
-        reasoning_effort: process.env.EXTERNAL_LLM_REASONING_EFFORT || "low",
+        // 800 tokens: enough for 5 bullets (~300 chars) plus reasoning overhead.
+        // Do NOT pass reasoning_effort — "low" caused 12s+ responses that exceeded
+        // Netlify's 10s function timeout. Without it the model responds in 7-9s.
+        max_tokens: Number(process.env.EXTERNAL_LLM_MAX_TOKENS || 800),
         messages: [
           { role: "system", content: system },
           {
