@@ -49,18 +49,18 @@ export function Sidebar({
       },
     ]);
     setInput("");
-    const online = await askCropBot(q, analysis, lang);
+    const result = await askCropBot(q, analysis, lang);
     setThread((t) =>
       t.map((m) =>
         m.id === id
           ? {
               ...m,
-              a: online?.answer || (lang === "ar"
-                ? "تعذر الوصول للمساعد أونلاين الآن. جرّب السؤال مرة تانية بعد ثواني، أو راجع كتالوج العلاج والأسعار في مرحلة العلاج."
-                : "The online assistant is unavailable right now. Try again in a few seconds, or use the treatment catalog and prices in the treatment phase."),
-              mode: online?.mode || "api-unavailable",
+              a: result?.answer ?? (lang === "ar"
+                ? "تعذر الوصول للمساعد. حاول مرة أخرى."
+                : "Assistant unavailable. Please try again."),
+              mode: result?.mode ?? "api-unavailable",
               pending: false,
-              online: online?.mode === "external-grounded-assistant",
+              online: result?.mode === "external-grounded-assistant",
             }
           : m,
       ),
@@ -129,15 +129,28 @@ export function Sidebar({
                   
                   <div className="mt-2 flex items-center gap-1.5 text-[9px] text-emerald-200/40">
                     {m.pending && <LoaderCircle size={10} className="animate-spin text-sky-300" />}
-                    {!m.pending && <MessageCircle size={10} className={m.online ? "text-sky-300" : "text-amber-300"} />}
+                    {!m.pending && (
+                      <MessageCircle
+                        size={10}
+                        className={
+                          m.online
+                            ? "text-sky-300"
+                            : m.mode === "offline-template"
+                              ? "text-violet-400"
+                              : "text-amber-300"
+                        }
+                      />
+                    )}
                     <span>
                       {m.pending
                         ? (lang === "ar" ? "بيفكر أونلاين..." : "thinking online...")
                         : m.online
                           ? (lang === "ar" ? "إجابة API أونلاين مبنية على الحالة" : "online API answer grounded in the case")
-                          : m.mode === "api-unavailable"
-                            ? (lang === "ar" ? "تعذر الاتصال الأونلاين" : "online unavailable")
-                            : (lang === "ar" ? "إجابة حالة موثوقة" : "grounded case answer")}
+                          : m.mode === "offline-template"
+                            ? (lang === "ar" ? "إجابة محلية من قاعدة البيانات (أوفلاين)" : "local KB answer (offline)")
+                            : m.mode === "api-unavailable"
+                              ? (lang === "ar" ? "تعذر الاتصال الأونلاين" : "online unavailable")
+                              : (lang === "ar" ? "إجابة حالة موثوقة" : "grounded case answer")}
                     </span>
                   </div>
                 </div>

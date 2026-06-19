@@ -158,7 +158,8 @@ export async function handler(event) {
     clearTimeout(timeout);
     if (!res.ok) throw new Error(`provider ${res.status}`);
     const data = await res.json();
-    const answer = String(data?.choices?.[0]?.message?.content || "").trim();
+    const msg = data?.choices?.[0]?.message;
+    const answer = String(msg?.content || msg?.reasoning_content || "").trim();
     if (!answer) throw new Error("empty provider answer");
     if (unsafeInventedTreatment(answer)) throw new Error("unsafe invented treatment details");
     return json(200, {
