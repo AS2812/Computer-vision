@@ -179,11 +179,38 @@ export function fuseDiagnosis({ local, ai, extent }: FuseInput): ScreeningResult
     ar: "إنت اللي اخترت الطماطم؛ موديل الصورة ما بيأكّدش المحصول لوحده.",
   });
 
-  const entry = localTopKey ? diseaseByKey(localTopKey) : undefined;
+  // ── AI-only disease override ───────────────────────────────────────────────
+  // When the AI identifies a disease the local ONNX model cannot detect
+  // (aiOnly === true) and the AI has sufficient confidence, surface the AI's
+  // pick as the result rather than the local model's guess.
+  let finalKey = state === "not_sure" ? null : localTopKey;
+  let finalName: Bi | null = null;
+
+  if (ai && !ai.notSure && ai.ranked.length > 0) {
+    const aiTop = ai.ranked[0];
+    const aiEntry = diseaseByKey(aiTop.key);
+    if (
+      aiEntry?.aiOnly === true &&
+      aiTop.confidence >= 0.60 &&
+      (state === "not_sure" || agreement === "disagree")
+    ) {
+      finalKey = aiTop.key;
+      state = "screening";
+      notes.push({
+        en: `The AI identified ${aiTop.name} (${Math.round(aiTop.confidence * 100)}%) — a disease the on-device model cannot detect. Confirm visually before treating.`,
+        ar: `الذكاء الاصطناعي تعرّف على ${aiEntry.name.ar} (${Math.round(aiTop.confidence * 100)}٪) — وهو مرض ما يقدرش موديل الجهاز يكتشفه. أكّد بعينك قبل العلاج.`,
+      });
+    }
+  }
+
+  const entry = finalKey ? diseaseByKey(finalKey) : undefined;
+  const localEntry = localTopKey ? diseaseByKey(localTopKey) : undefined;
+  finalName = entry?.name ?? localEntry?.name ?? top?.name ?? null;
+
   return {
     state,
-    topKey: state === "not_sure" ? null : localTopKey,
-    topName: state === "not_sure" ? null : entry?.name ?? top?.name ?? null,
+    topKey: finalKey,
+    topName: state === "not_sure" ? null : finalName,
     displayConfidence: localTopConf,
     certainty: band,
     candidates: local.top3,

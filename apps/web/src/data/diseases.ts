@@ -391,6 +391,87 @@ export const TOMATO_DISEASES: TomatoDisease[] = [
   },
 ];
 
+// ── AI-only diseases ──────────────────────────────────────────────────────────
+// These diseases are NOT in the local ONNX / PlantVillage model. They can only be
+// identified by the AI second opinion (mimo). modelIndex = -1, rawLabel = "".
+// They are added to the BY_KEY lookup so the app can display their KB card, but
+// they never appear in the local model's candidate list.
+const AI_ONLY_DISEASES: TomatoDisease[] = [
+  {
+    key: "tomato_grey_mold",
+    rawLabel: "",
+    modelIndex: -1,
+    aiOnly: true,
+    name: { en: "Grey mold (Botrytis)", ar: "العفن الرمادي (بوتريتيس)" },
+    short: { en: "Grey mold", ar: "عفن رمادي" },
+    cause: "fungal",
+    isPest: false,
+    curable: true,
+    summary: {
+      en: "A grey fluffy mold (Botrytis cinerea) that attacks soft tissue — flowers, fruit, and leaves — especially in cool, wet, humid conditions. A major greenhouse threat. Act fast: it spreads in hours in still humid air.",
+      ar: "عفن رمادي زغبي (بوتريتيس سينيريا) بيضرب الأنسجة الطرية — زهور وثمار وورق — خصوصًا في الجو البارد الرطب. تهديد كبير في الصوب. اتحرّك سريع: بيتنتشر في ساعات في الهواء الساكن الرطب.",
+    },
+    symptomsLeaf: [
+      { en: "Brown to grey water-soaked patches, then fluffy grey mold grows on top in humid air.", ar: "بقع بنية لرمادية مبلّلة ثم عفن رمادي زغبي ينمو فوقها في الجو الرطب." },
+      { en: "Leaves collapse and die quickly when the air is still and very humid.", ar: "الورق بيسقط ويموت بسرعة لما الهواء ساكن ورطوبته عالية." },
+    ],
+    symptomsFruit: [
+      { en: "Soft brown rot on fruit, often starting at the stem scar, quickly covered in fluffy grey spore masses.", ar: "تعفّن بني طري على الثمرة، غالبًا بيبدأ من أثر العنق، وبسرعة بيتغطى بكتل جرثومية رمادية زغبية." },
+    ],
+    symptomsStem: [
+      { en: "Cankers on the stem with a grey mold mat at the lesion; infected stems girdle and kill the branch above.", ar: "قرح على الساق بحصيرة عفن رمادية عند التقرّح؛ الساق المصابة بتخنق وتقتل الفرع اللي فوقها." },
+    ],
+    todayCheck: [
+      { en: "Touch a suspect lesion: if grey dust (spores) puffs up, that is Botrytis — the giveaway.", ar: "المس التقرّح المشتبه به: لو طار منه غبار رمادي (جراثيم) فده بوتريتيس — العلامة المميّزة." },
+      { en: "Check flowers and the stem just under dead flower clusters — Botrytis often starts there.", ar: "افحص الزهور والساق تحت عناقيد الزهور الميتة مباشرة — البوتريتيس غالبًا بيبدأ هناك." },
+    ],
+    lookalikes: ["tomato_leaf_mold", "tomato_late_blight"],
+    protectNote: {
+      en: "Cut off and bag any infected parts immediately — never leave them on the floor or in open buckets. Vent the greenhouse, heat if needed, and widen plant spacing.",
+      ar: "قصّ واحجب أي أجزاء مصابة فورًا — ما تسيبهاش على الأرض أو في دلاو مفتوحة. هوّي الصوبة، سخّنها لو لازم، ووسّع مسافات الزرع.",
+    },
+    treatmentNote: {
+      en: "Humidity control first (ventilate, heat, widen spacing, water early in the day). Remove all infected tissue. If it persists, a registered fungicide (botryticide) programme is needed — rotate chemistry to avoid resistance. Confirm the Egyptian APC label dose with an agronomist.",
+      ar: "أول حاجة التحكّم في الرطوبة (تهوية، تدفئة، توسيع مسافات، ري الصبح بدري). شيل كل الأنسجة المصابة. لو استمر، برنامج مبيد فطري مسجّل (ضد البوتريتيس) لازم — بدّل المجموعة الكيميائية عشان تتجنّب المقاومة. أكّد جرعة لافتة لجنة المبيدات المصرية مع مهندس زراعي.",
+    },
+  },
+  {
+    key: "tomato_grey_leaf_spot",
+    rawLabel: "",
+    modelIndex: -1,
+    aiOnly: true,
+    name: { en: "Grey leaf spot (Stemphylium)", ar: "التبقّع الرمادي (ستيمفيليوم)" },
+    short: { en: "Grey leaf spot", ar: "تبقّع رمادي" },
+    cause: "fungal",
+    isPest: false,
+    curable: true,
+    summary: {
+      en: "A fungal disease (Stemphylium solani / S. lycopersici) giving grey to brown spots with a yellow border on the lower, older leaves first. It loves warm, humid weather and is often confused with Septoria because of the similar small-spot pattern.",
+      ar: "مرض فطري (ستيمفيليوم) بيدّي بقع رمادية لبنية بحافة صفرا على الورق السفلي الكبير الأول. بيحب الجو الدافي الرطب وغالبًا بيتلخبط مع السبتوريا بسبب نمط البقع الصغيرة المتشابه.",
+    },
+    symptomsLeaf: [
+      { en: "Small round to oval grey/tan spots with a distinct yellow border, mostly on lower leaves first.", ar: "بقع صغيرة دايرية لبيضاوية رمادية/بيج بحافة صفرا واضحة، غالبًا في الورق السفلي الأول." },
+      { en: "Spots may have a thin dark border and a water-soaked halo in humid mornings.", ar: "البقع ممكن يكون ليها حافة غامقة رفيعة وهالة مبلّلة في الصباح الرطب." },
+      { en: "Heavy infection strips the lower canopy; leaves turn yellow and drop.", ar: "الإصابة الشديدة بتوقّع الطبقة السفلية؛ الورق بيصفرّ ويقع." },
+    ],
+    symptomsFruit: [
+      { en: "Fruit is rarely affected directly; losses come from defoliation and sun-scald.", ar: "الثمرة نادرًا بتتأثر مباشرة؛ الخسارة من فقدان الورق والحرق الشمسي." },
+    ],
+    symptomsStem: [
+      { en: "Stem lesions are uncommon but small grey spots can appear on petioles.", ar: "تقرّحات الساق غير شائعة بس بقع رمادية صغيرة ممكن تظهر على أعناق الورق." },
+    ],
+    todayCheck: [
+      { en: "Compare with Septoria: grey leaf spot spots tend to be larger and less perfectly round, with a less-defined centre dot than Septoria's black pycnidia.", ar: "قارن مع السبتوريا: بقع التبقّع الرمادي بتبان أكبر وأقل استدارة، وبدون النقطة السودا الواضحة اللي بتميّز السبتوريا." },
+      { en: "Check if it started on the oldest lower leaves in warm wet weather — that pattern fits Stemphylium.", ar: "تحقّق لو بدأت في الورق السفلي الأكبر في الجو الدافي الرطب — النمط ده بيناسب ستيمفيليوم." },
+    ],
+    lookalikes: ["septoria_leaf_spot_tomato", "tomato_early_blight", "tomato_bacterial_spot"],
+    treatmentNote: {
+      en: "Remove the lowest spotted leaves, keep foliage dry, mulch, and rotate. Start a registered protectant fungicide programme at first spots — same management as Septoria. Confirm the Egyptian APC label dose with an agronomist first.",
+      ar: "شيل الورق السفلي المبقّع، حافظ على جفاف الورق، غطّي الأرض بالتبن، ودوّر. ابدأ برنامج مبيد فطري وقائي مسجّل من أول البقع — نفس إدارة السبتوريا. أكّد جرعة لجنة المبيدات المصرية مع مهندس زراعي الأول.",
+    },
+  },
+];
+
 // Healthy is handled separately — it is the absence of a disease, not one of the
 // ranked disease candidates the UI links to.
 export const HEALTHY: TomatoDisease = {
@@ -420,7 +501,7 @@ export const HEALTHY: TomatoDisease = {
 };
 
 const BY_KEY: Record<string, TomatoDisease> = Object.fromEntries(
-  [...TOMATO_DISEASES, HEALTHY].map((d) => [d.key, d]),
+  [...TOMATO_DISEASES, ...AI_ONLY_DISEASES, HEALTHY].map((d) => [d.key, d]),
 );
 
 /** Look up a disease (incl. healthy) by its internal key. */

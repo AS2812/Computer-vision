@@ -31,10 +31,18 @@ const DISEASE_CHOICES: Record<string, string> = {
   "Late blight": "tomato_late_blight",
   "Bacterial spot": "tomato_bacterial_spot",
   "Leaf mold": "tomato_leaf_mold",
+  "Leaf mould": "tomato_leaf_mold",
   "Target spot": "tomato_target_spot",
   "Spider mites": "tomato_spider_mites",
   "Yellow leaf curl virus": "tomato_yellow_leaf_curl_virus",
   "Mosaic virus": "tomato_mosaic_virus",
+  "Grey mold": "tomato_grey_mold",
+  "Gray mold": "tomato_grey_mold",
+  "Grey mould": "tomato_grey_mold",
+  "Botrytis": "tomato_grey_mold",
+  "Grey leaf spot": "tomato_grey_leaf_spot",
+  "Gray leaf spot": "tomato_grey_leaf_spot",
+  "Stemphylium leaf spot": "tomato_grey_leaf_spot",
   "Healthy": "healthy",
 };
 
@@ -59,14 +67,31 @@ const ALIASES: Array<[string, string]> = [
   ["mosaic", "tomato_mosaic_virus"],
   ["tomv", "tomato_mosaic_virus"],
   ["tmv", "tomato_mosaic_virus"],
+  ["grey mold", "tomato_grey_mold"],
+  ["gray mold", "tomato_grey_mold"],
+  ["grey mould", "tomato_grey_mold"],
+  ["gray mould", "tomato_grey_mold"],
+  ["botrytis", "tomato_grey_mold"],
+  ["botrytis cinerea", "tomato_grey_mold"],
+  ["grey leaf spot", "tomato_grey_leaf_spot"],
+  ["gray leaf spot", "tomato_grey_leaf_spot"],
+  ["stemphylium", "tomato_grey_leaf_spot"],
+  ["grey spot", "tomato_grey_leaf_spot"],
+  ["gray spot", "tomato_grey_leaf_spot"],
   ["healthy", "healthy"],
   ["no disease", "healthy"],
+  ["no sign", "healthy"],
 ];
+
+const DISEASE_LIST = Object.keys(DISEASE_CHOICES).join("; ");
 
 const SYSTEM_PROMPT =
   "You are a tomato plant pathologist helping Egyptian farmers. Look ONLY at the " +
   "leaf photo and decide the most likely tomato disease. Choose disease names ONLY " +
-  "from this list: " + Object.keys(DISEASE_CHOICES).join("; ") + ". " +
+  "from this list: " + DISEASE_LIST + ". " +
+  "Important: Grey mold (Botrytis) shows fluffy grey/brown mold on tissue. " +
+  "Grey leaf spot (Stemphylium) shows small grey/tan spots with yellow borders on lower leaves. " +
+  "Leaf mold/mould shows velvety olive-brown underside mold under yellow patches. " +
   "Be strictly honest: if the photo is blurry, too far, or not a tomato leaf, set " +
   "is_tomato_leaf or not_sure appropriately and lower your confidence. Never invent " +
   "a disease outside the list. Never give a chemical dose. Confidence is your visual " +
